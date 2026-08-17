@@ -65,7 +65,7 @@ fn keybd_event(mut flags: u32, vk: u16, scan: u16) -> DWORD {
             wScan: scan,
             dwFlags: flags,
             time: 0,
-            dwExtraInfo: ENIGO_INPUT_EXTRA_VALUE,
+            dwExtraInfo: 0,
         };
     }
     let mut inputs = [INPUT {

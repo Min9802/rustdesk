@@ -937,6 +937,7 @@ impl<T: InvokeUiSession> Session<T> {
         } else {
             self._handle_raw_key_non_flutter_simulation(
                 keyboard_mode,
+                name,
                 platform_code,
                 position_code,
                 lock_modes,
@@ -949,6 +950,7 @@ impl<T: InvokeUiSession> Session<T> {
     fn _handle_raw_key_non_flutter_simulation(
         &self,
         keyboard_mode: &str,
+        name: &str,
         platform_code: i32,
         position_code: i32,
         lock_modes: i32,
@@ -973,7 +975,15 @@ impl<T: InvokeUiSession> Session<T> {
         };
         let event = Event {
             time: SystemTime::now(),
-            unicode: None,
+            unicode: if name.is_empty() {
+                None
+            } else {
+                Some(rdev::UnicodeInfo {
+                    name: Some(name.to_string()),
+                    unicode: name.encode_utf16().collect(),
+                    is_dead: false,
+                })
+            },
             platform_code,
             position_code: position_code as _,
             event_type,
